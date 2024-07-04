@@ -31,6 +31,7 @@ class TodoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'user_id' => 'required|integer',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
@@ -92,5 +93,17 @@ class TodoController extends Controller
         $todo->delete();
 
         return response()->json(['message' => 'To do has deleted!']);
+    }
+
+    public function user(int $id)
+    {
+        $todo = Todo::find($id);
+
+        if (!$todo)
+            return response()->json(['message' => 'To do not found'], 404);
+
+        $todo->user;
+
+        return response()->json(['message' => 'To do with user has found!', "data" => $todo], 201);
     }
 }
